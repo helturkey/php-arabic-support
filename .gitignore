@@ -1,0 +1,32 @@
+/vendor/
+/composer.lock
+
+# PHPUnit
+/.phpunit.cache/
+/.phpunit.result.cache
+/phpunit.result.cache
+
+# Static analysis / coverage
+/build/
+/coverage/
+.phpstan.cache
+
+# Laravel Pint / code style
+.pint.cache
+.php-cs-fixer.cache
+
+# Environment / local files
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+
+# IDEs
+/.idea/
+/.vscode/
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak

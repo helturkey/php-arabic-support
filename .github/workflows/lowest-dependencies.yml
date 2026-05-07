@@ -1,0 +1,43 @@
+name: Lowest Dependencies
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+
+jobs:
+  lowest:
+    name: PHP 8.2 / lowest dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, intl, sqlite3, pdo_sqlite
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Install lowest dependencies
+        run: composer update --prefer-lowest --prefer-stable --prefer-dist --no-interaction --no-progress
+
+      - name: Lint PHP files
+        run: find src tests config -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Check code style
+        run: composer format:test
+
+
+      - name: Run PHPUnit
+        run: composer test
+
+      - name: Run runtime dependency audit
+        run: composer security:runtime
