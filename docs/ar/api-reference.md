@@ -110,6 +110,7 @@
 - `TextCleaner::sanitizeForSearch(string $text): string` — ينتج نصًا مناسبًا للبحث.
 - `TextCleaner::normalizeWhitespace(string $text, bool $preserveNewLines = false): string` — يضبط المسافات.
 - `TextCleaner::normalizeInlineWhitespace(string $text): string` — يضبط المسافات كسطر واحد.
+- `TextCleaner::normalizeConjunctionWaw(string $text): string` — يلحق واو العطف المستقلة بالكلمة العربية التالية مثل `محمد و علي` إلى `محمد وعلي`.
 - `TextCleaner::deepTrim(string $text, bool $preserveNewLines = false): string` — يقص المسافات ومحارف التحكم من الطرفين.
 - `UnicodeSecurityCleaner::removeBidiControls(string $text): string` — يزيل محارف اتجاه النص.
 - `UnicodeSecurityCleaner::removeZeroWidthCharacters(string $text): string` — يزيل محارف zero-width.
@@ -144,8 +145,8 @@
 ### الروابط والمقتطفات والترقيم والفلترة والأنماط
 
 - `ArabicSlugger::slug(...): string` — ينشئ slug حسب `SlugMode`.
-- `ArabicSlugger::unicode(...): string` — ينشئ slug عربيًا مقروءًا.
-- `ArabicSlugger::ascii(...): string` — ينشئ slug بنمط ASCII.
+- `ArabicSlugger::unicode(...): string` — ينشئ slug عربيًا مقروءًا ويضبط واو العطف المستقلة قبل تحويل المسافات إلى فواصل.
+- `ArabicSlugger::ascii(...): string` — ينشئ slug بنمط ASCII ويضبط واو العطف المستقلة قبل النقل الصوتي.
 - `ArabicTransliterator::toAscii(string $text, bool $normalize = true): string` — ينقل العربية إلى ASCII تقريبي.
 - `UniqueSlugger::unique(string $text, callable $exists, SlugMode $mode = SlugMode::Unicode, string $separator = '-'): string` — ينشئ slug فريدًا باستخدام callback للتحقق من الوجود.
 - `TextExcerpt::excerpt(string $htmlOrText, int $limit = 200, string $end = ' ...'): string` — ينشئ مقتطفًا دون قطع الكلمات.

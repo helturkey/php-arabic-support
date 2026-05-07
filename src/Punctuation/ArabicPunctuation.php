@@ -11,6 +11,9 @@ use ArabicSupport\Compat\StringSupport;
  */
 final class ArabicPunctuation
 {
+    /**
+     * Add a single space after Arabic/common punctuation when followed by text.
+     */
     public function addSpaceAfterPunctuation(string $text): string
     {
         $text = preg_replace('/([:;؟؛\?،])(?=\S)/u', '$1 ', $text) ?: $text;
@@ -19,6 +22,9 @@ final class ArabicPunctuation
         return preg_replace('/[ \t]{2,}/u', ' ', $text) ?: $text;
     }
 
+    /**
+     * Normalize Arabic punctuation, bracket, quote, ellipsis, and whitespace spacing.
+     */
     public function normalize(string $text): string
     {
         if (StringSupport::trim($text) === '') {
@@ -50,10 +56,17 @@ final class ArabicPunctuation
         return StringSupport::trim($text);
     }
 
+    /**
+     * Normalize Arabic conjunction waw spacing by attaching standalone waw to the following Arabic word.
+     *
+     * This removes the space after a standalone conjunction waw only when the waw appears
+     * at the beginning of a line or after whitespace. It preserves the previous space,
+     * so `محمد و علي` becomes `محمد وعلي`, not `محمدوعلي`.
+     */
     public function normalizeConjunctionWaw(string $text): string
     {
         $diacritics = '[\x{064B}-\x{065F}\x{0670}\x{06D6}-\x{06ED}]';
 
-        return preg_replace('/(?:(?<=\s)|^)و'.$diacritics.'*\s+/um', 'و', $text) ?: $text;
+        return preg_replace('/(^|\s)(و'.$diacritics.'*)\s+(?=\p{Arabic})/um', '$1$2', $text) ?: $text;
     }
 }

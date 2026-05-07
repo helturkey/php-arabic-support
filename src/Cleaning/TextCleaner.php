@@ -10,6 +10,7 @@ use ArabicSupport\Normalization\ArabicNormalizer;
 use ArabicSupport\Normalization\DiacriticsStripper;
 use ArabicSupport\Normalization\TatweelStripper;
 use ArabicSupport\Patterns\ArabicPatterns;
+use ArabicSupport\Punctuation\ArabicPunctuation;
 
 /**
  * General text cleaning helpers for Arabic and mixed-language input.
@@ -23,12 +24,16 @@ final class TextCleaner
     /** Characters commonly accepted in readable text sanitization. */
     private const COMMON_PUNCTUATION = '#: -.,،؛;?؟!()[]{}«»"\'';
 
+    /**
+     * Create a text cleaner with injectable helper services.
+     */
     public function __construct(
         private readonly WhitespaceNormalizer $whitespace = new WhitespaceNormalizer,
         private readonly UnicodeSecurityCleaner $security = new UnicodeSecurityCleaner,
         private readonly TatweelStripper $tatweel = new TatweelStripper,
         private readonly DiacriticsStripper $diacritics = new DiacriticsStripper,
         private readonly ArabicNormalizer $normalizer = new ArabicNormalizer,
+        private readonly ArabicPunctuation $punctuation = new ArabicPunctuation,
     ) {}
 
     /**
@@ -160,6 +165,16 @@ final class TextCleaner
     public function normalizeInlineWhitespace(string $text): string
     {
         return $this->whitespace->normalizeInline($text);
+    }
+
+    /**
+     * Normalize standalone Arabic conjunction waw spacing.
+     *
+     * Examples: `محمد و علي` becomes `محمد وعلي`, and `و أحمد` becomes `وأحمد`.
+     */
+    public function normalizeConjunctionWaw(string $text): string
+    {
+        return $this->punctuation->normalizeConjunctionWaw($text);
     }
 
     /** Trim regular and invisible Unicode whitespace from the text. */

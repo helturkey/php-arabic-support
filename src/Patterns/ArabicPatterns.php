@@ -44,11 +44,17 @@ final class ArabicPatterns
      */
     private function __construct() {}
 
+    /**
+     * Wrap a delimiter-free regex fragment in a PCRE character class.
+     */
     public static function charClass(string $fragment): string
     {
         return '['.$fragment.']';
     }
 
+    /**
+     * Return a pattern that strips Arabic/Latin ordered-list prefixes from line starts.
+     */
     public static function orderedListPrefix(): string
     {
         $digits = self::charClass(self::ALL_DIGITS);
@@ -78,11 +84,17 @@ final class ArabicPatterns
             .']+$/u';
     }
 
+    /**
+     * Return a pattern that detects Arabic script characters.
+     */
     public static function arabic(): string
     {
         return '/'.self::ARABIC_SCRIPT.'/u';
     }
 
+    /**
+     * Return a pattern that matches Arabic diacritics and optional Quranic marks.
+     */
     public static function diacritics(bool $includeQuranMarks = true): string
     {
         return $includeQuranMarks
@@ -90,21 +102,33 @@ final class ArabicPatterns
             : '/'.self::charClass(self::BASIC_DIACRITICS).'/u';
     }
 
+    /**
+     * Return a pattern that matches Arabic tatweel/kashida.
+     */
     public static function tatweel(): string
     {
         return '/'.self::TATWEEL.'/u';
     }
 
+    /**
+     * Return a pattern that matches bidirectional Unicode controls.
+     */
     public static function bidiControls(): string
     {
         return '/'.self::charClass(self::BIDI_CONTROLS).'/u';
     }
 
+    /**
+     * Return a pattern that matches zero-width Unicode formatting characters.
+     */
     public static function zeroWidth(): string
     {
         return '/'.self::charClass(self::ZERO_WIDTH).'/u';
     }
 
+    /**
+     * Return a pattern that matches characters not allowed during slug preparation.
+     */
     public static function slugAllowed(): string
     {
         return '/[^'.self::LETTER.self::NUMBER.self::MARK.'\\-\\s]+/u';

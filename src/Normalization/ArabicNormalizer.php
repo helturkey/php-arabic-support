@@ -36,6 +36,9 @@ use Normalizer;
  */
 final class ArabicNormalizer
 {
+    /**
+     * Create an Arabic normalizer with injectable stripping and whitespace helpers.
+     */
     public function __construct(
         private readonly DiacriticsStripper $diacritics = new DiacriticsStripper,
         private readonly TatweelStripper $tatweel = new TatweelStripper,

@@ -29,6 +29,9 @@ final class ArabicTransliterator
         'ي' => 'y', 'ی' => 'y', 'ى' => 'a', 'ئ' => 'y',
     ];
 
+    /**
+     * Create an Arabic transliterator with injectable helpers.
+     */
     public function __construct(
         private readonly ArabicNormalizer $normalizer = new ArabicNormalizer,
         private readonly TatweelStripper $tatweel = new TatweelStripper,

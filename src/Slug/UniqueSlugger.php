@@ -11,6 +11,9 @@ use ArabicSupport\Enums\SlugMode;
  */
 final class UniqueSlugger
 {
+    /**
+     * Create a unique slug generator with an injectable slugger.
+     */
     public function __construct(
         private readonly ArabicSlugger $slugger = new ArabicSlugger,
     ) {}

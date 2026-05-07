@@ -26,6 +26,9 @@ final class ArabicText
     /** Current text value carried through the pipeline. */
     private string $text;
 
+    /**
+     * Create a fluent text wrapper around the given string.
+     */
     private function __construct(string $text)
     {
         $this->text = $text;
@@ -161,6 +164,14 @@ final class ArabicText
     public function fixPunctuation(): self
     {
         $this->text = (new ArabicPunctuation)->normalize($this->text);
+
+        return $this;
+    }
+
+    /** Normalize standalone Arabic conjunction waw spacing. */
+    public function normalizeConjunctionWaw(): self
+    {
+        $this->text = (new ArabicPunctuation)->normalizeConjunctionWaw($this->text);
 
         return $this;
     }

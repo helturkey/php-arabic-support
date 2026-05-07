@@ -110,6 +110,7 @@ This page lists the public methods provided by PHP Arabic Support. Each method i
 - `TextCleaner::sanitizeForSearch(string $text): string` — Produces sanitized search text.
 - `TextCleaner::normalizeWhitespace(string $text, bool $preserveNewLines = false): string` — Normalizes whitespace.
 - `TextCleaner::normalizeInlineWhitespace(string $text): string` — Normalizes whitespace to one line.
+- `TextCleaner::normalizeConjunctionWaw(string $text): string` — Attaches standalone conjunction waw to the following Arabic word, such as `محمد و علي` to `محمد وعلي`.
 - `TextCleaner::deepTrim(string $text, bool $preserveNewLines = false): string` — Trims Unicode whitespace and controls.
 - `UnicodeSecurityCleaner::removeBidiControls(string $text): string` — Removes bidi controls.
 - `UnicodeSecurityCleaner::removeZeroWidthCharacters(string $text): string` — Removes zero-width characters.
@@ -144,8 +145,8 @@ This page lists the public methods provided by PHP Arabic Support. Each method i
 ### Slugs, excerpts, punctuation, filtering, and patterns
 
 - `ArabicSlugger::slug(...): string` — Generates a slug using `SlugMode`.
-- `ArabicSlugger::unicode(...): string` — Generates a readable Unicode slug.
-- `ArabicSlugger::ascii(...): string` — Generates an ASCII slug.
+- `ArabicSlugger::unicode(...): string` — Generates a readable Unicode slug and normalizes standalone conjunction waw before separator replacement.
+- `ArabicSlugger::ascii(...): string` — Generates an ASCII slug and normalizes standalone conjunction waw before transliteration.
 - `ArabicTransliterator::toAscii(string $text, bool $normalize = true): string` — Transliterates Arabic text to ASCII.
 - `UniqueSlugger::unique(string $text, callable $exists, SlugMode $mode = SlugMode::Unicode, string $separator = '-'): string` — Generates a unique slug using an existence callback.
 - `TextExcerpt::excerpt(string $htmlOrText, int $limit = 200, string $end = ' ...'): string` — Builds an excerpt without cutting words.

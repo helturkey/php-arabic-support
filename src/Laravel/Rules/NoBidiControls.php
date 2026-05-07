@@ -17,6 +17,9 @@ use Illuminate\Translation\PotentiallyTranslatedString;
  */
 final class NoBidiControls implements ValidationRule
 {
+    /**
+     * Create the rule with an optional Unicode security cleaner.
+     */
     public function __construct(
         private readonly UnicodeSecurityCleaner $cleaner = new UnicodeSecurityCleaner,
     ) {}

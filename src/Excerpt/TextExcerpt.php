@@ -15,11 +15,17 @@ final class TextExcerpt
     /** @var TextCleaner */
     private $cleaner;
 
+    /**
+     * Create an excerpt builder with an optional text cleaner.
+     */
     public function __construct(?TextCleaner $cleaner = null)
     {
         $this->cleaner = $cleaner ?: new TextCleaner;
     }
 
+    /**
+     * Build an excerpt from HTML or plain text without cutting the last word.
+     */
     public function excerpt(string $htmlOrText, int $limit = 200, string $end = ' ...'): string
     {
         $text = $this->cleaner->stripHtml($htmlOrText, true);

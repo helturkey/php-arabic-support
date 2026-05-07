@@ -9,6 +9,7 @@ use ArabicSupport\Compat\StringSupport;
 use ArabicSupport\Enums\ArabicPolicy;
 use ArabicSupport\Enums\SlugMode;
 use ArabicSupport\Normalization\ArabicNormalizer;
+use ArabicSupport\Punctuation\ArabicPunctuation;
 
 /**
  * Generates Unicode and ASCII slugs from Arabic or mixed-language text.
@@ -19,10 +20,14 @@ use ArabicSupport\Normalization\ArabicNormalizer;
  */
 final class ArabicSlugger
 {
+    /**
+     * Create an Arabic slugger with injectable normalization helpers.
+     */
     public function __construct(
         private readonly TextCleaner $cleaner = new TextCleaner,
         private readonly ArabicNormalizer $normalizer = new ArabicNormalizer,
         private readonly ArabicTransliterator $transliterator = new ArabicTransliterator,
+        private readonly ArabicPunctuation $punctuation = new ArabicPunctuation,
     ) {}
 
     /** Generate a slug using the selected output mode. */
@@ -44,6 +49,7 @@ final class ArabicSlugger
     public function unicode(string $text, string $separator = '-', int $maxWords = 8, int $maxLength = 180): string
     {
         $text = $this->cleaner->keepSlugCharacters($text);
+        $text = $this->punctuation->normalizeConjunctionWaw($text);
         $text = $this->normalizer->normalize($text, ArabicPolicy::Slug);
         $text = $this->limitWords($text, $maxWords);
         $text = preg_replace('/[^\p{L}\p{N}]+/u', $separator, $text) ?: '';
@@ -57,6 +63,7 @@ final class ArabicSlugger
     /** Generate an ASCII-only slug by transliterating Arabic text. */
     public function ascii(string $text, string $separator = '-', int $maxWords = 8, int $maxLength = 180): string
     {
+        $text = $this->punctuation->normalizeConjunctionWaw($text);
         $text = $this->transliterator->toAscii($text);
         $text = $this->limitWords($text, $maxWords);
         $text = preg_replace('/[^A-Za-z0-9]+/', $separator, $text) ?: '';
